@@ -1,22 +1,20 @@
 <?php
 
 
-class _ModelUser {
-    public $id_user;
-    public $name_user;
-    public $email;
-    protected $password;
-    public $actor;
+class Model_User extends Model_Base {
+    public $id_u;
+    public $name_u;
+    public $email_u;
+    protected $password_u;
+    public $actor = 'user';
 
-    public function setActor($actor) {
-        $this->actor = $actor;
-        $this->actor = 'admin';
-
-    }
-    public function showModel() {
-        echo $this->id_user . '<br>';
-        echo $this->name_user . '<br>';
-        echo $this->email . '<br>';
-        echo $this->actor . '<br>';
+    public function tableFields(){
+        return array(
+            'Id_user' => $this->id_u,
+            'Name_user' => $this->name_u,
+            'Email_user' => $this->email_u,
+            'Password_user' => $this->password_u,
+            'Actor' => $this->actor
+        );
     }
 }

@@ -5,7 +5,7 @@ require_once('configuration/database.php');
 require_once('configuration/constants.php');
 
 // Data Base connection
-mysqli_connect(DB_host, DB_user, DB_pass, DB_name);
+$dbObject = mysqli_connect(DB_host, DB_user, DB_pass, DB_name);
 
 // Connect Core
 require('core.php');
