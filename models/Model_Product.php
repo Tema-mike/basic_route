@@ -3,13 +3,13 @@
 
 class Model_Product extends Model_Base {
     public $id_prod;
-    public $name_prod; // for search
-    public $color_prod;  // white / black / red / green / multicolor
-    public $material_prod; //
-    public $brand_prod; //brand 1 / brand 2 / brand 3
-    public $photo_prod; //path to photo
-    public $country_prod; // Russia / USA / UK / German / China
-    public $prise_prod; // between 1 and 100 y.e.
+    public $name_prod;
+    public $color_prod;
+    public $material_prod;
+    public $brand_prod;
+    public $photo_prod;
+    public $country_prod;
+    public $prise_prod;
 
     public function tableFields(){
         return array(
@@ -28,7 +28,7 @@ class Model_Product extends Model_Base {
         $select = array(
             'chooseParam' => ''
         );
-        if (($_POST['arrPrice'] !== NULL) OR ($_POST['arrColor'] !== NULL) OR ($_POST['arrBrand'] !== NULL) OR ($_POST['arrMaterials'] !== NULL) OR ($_POST['arrCountry'] !== NULL)){
+        if ((!empty($_POST['arrPrice'])) OR (!empty($_POST['arrColor'])) OR (!empty($_POST['arrBrand'])) OR (!empty($_POST['arrMaterials'])) OR (!empty($_POST['arrCountry']))){
             $arrPrice = explode(' ', $_POST['arrPrice']);
             $arrColor = explode(' ', $_POST['arrColor']);
             $arrBrand = explode(' ', $_POST['arrBrand']);

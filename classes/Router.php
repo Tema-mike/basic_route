@@ -29,7 +29,7 @@ class Router {
     //Identification of controller and action
     private function getController(&$file, &$controller, &$action, &$args) {
         $route = (empty($_GET['route']) ? '' : $_GET['route']);
-        unset($route);
+        // runset($route);
 
         if (empty($route)) {
             $route = 'index';
@@ -42,7 +42,8 @@ class Router {
         // Find controller
         $cmd_path = $this->path;
         foreach ($parts as $part) {
-            $fullpath = $cmd_path . $part;
+            $part = ucfirst($part);
+            $fullpath = $cmd_path . "Controller_" . $part;
 
             // Check the folder
             if (is_dir($fullpath)) {
@@ -58,6 +59,7 @@ class Router {
                 break;
             }
         }
+
 
         // If the controller not found in URL, use 'index'
         if (empty($controller)) {
@@ -75,6 +77,7 @@ class Router {
 
     public function start() {
         $this->getController($file, $controllrer, $action, $args);
+
         if (is_readable($file) == false){
             die('404 Not Found Controller');
         }

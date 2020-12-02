@@ -16,10 +16,12 @@ html, body {
 } #filters {
     width: 20%;
     background: #808080;
-  } #catalog {
+  }
+#catalog {
     width: 80%;
+    height: 100%;
     background: darkgrey;
-      }
+}
 
 /*-------------------------------------------------------------*/
 .dropbtn, #Show {
@@ -82,22 +84,31 @@ html, body {
     color: white;
 }
 #cont-for-cards {
-    width: 90%;
-    margin: 0 auto;
+    width: 95%;
+    margin: 20px auto;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    font-size: 0.7rem;
 }
 .card {
     display: inline-block;
+    border: 2px solid white;
     border-radius: 10px;
     background: lightgrey;
-    width: 30%;
+    width: 25%;
     height: 40vh;
+    margin: 5px;
+    padding: 5px;
 }
 .card img {
+    margin: 0 auto;
     width: 90%;
     height: 60%;
+    background: green;
 }
 .contParam {
     width: 90%;
     height: 40%;
+    margin: 0 auto;
 }

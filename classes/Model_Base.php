@@ -24,9 +24,10 @@ abstract class Model_Base {
         try {
             $db = $this->db;
             $stmt = $db->query($sqlSelect);
-            $rows = $stmt->fetch_all();
+            $rows = $stmt->fetchAll();
             $this->dataResult = $rows;
-            echo json_encode($this->dataResult);
+            return $this->dataResult;
+
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
@@ -76,7 +77,7 @@ abstract class Model_Base {
             $choseParam = $select['chooseColumn'];
         }
 
-        $sqlSelect ="SELECT" . $choseParam . "FROM" . $this->table;
+        $sqlSelect ="SELECT" . $choseParam . "FROM " . $this->table;
 
         //---------- Cases of conditions ----------//
         //WHERE

@@ -7,16 +7,15 @@ class Controller_Index extends Controller_Base {
     //action
     function index() {
         $this->template->view('Home');
-        $model = new Model_Product();
-        $select = $model->constructSelect();
-        $model->selectRows($select);
     }
 
     //Building sql query
     function filters(){
-
-
-
+        require_once ('models/Model_Product.php');
+        $model = new Model_Product();
+        $select = $model->constructSelect();
+        $dataResult = json_encode($model->selectRows($select));
+        echo $dataResult;
     }
 
 }

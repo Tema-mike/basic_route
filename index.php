@@ -5,7 +5,8 @@ require_once('configuration/database.php');
 require_once('configuration/constants.php');
 
 // Data Base connection
-$dbObject = mysqli_connect(DB_host, DB_user, DB_pass, DB_name);
+$dsn = "mysql:host=" . DB_host . ";dbname=" . DB_name;
+$dbObject = new PDO( $dsn, DB_user, DB_pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
 // Connect Core
 require('core.php');
@@ -14,6 +15,7 @@ require('core.php');
 require('classes/Router.php');
 require('classes/Controller_Base.php');
 require('classes/Template.php');
+require ('classes/Model_Base.php');
 
 //Connect Router
 $router = new Router($registry);

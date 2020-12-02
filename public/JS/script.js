@@ -1,3 +1,7 @@
+$(document).ready(event =>{
+    getAjax();
+});
+
 // Open and close filters
 $(".dropbtn").click(function(){
    let btn = $(this).next().attr('class');
@@ -39,23 +43,13 @@ $('#Show').click(function () {
                 break;
         }
     });
+    getAjax(arrPrice, arrColor, arrBrand, arrMaterial, arrCountry);
+    //console.log(arrPrice)
+    //console.log(arrColor)
+    //console.log(arrBrand)
+    //.log(arrMaterial)
+    //.log(arrCountry)
 
-    $.ajax({
-        url: 'http://basicserver/controllers/Controller_Index.php',
-        method: 'POST',
-        contentType: 'application/x-www-form-urlencoder',
-        dataType: 'json',
-        data: {
-            arrPrice: arrPrice,
-            arrColor : arrColor,
-            arrBrand : arrBrand,
-            arrMaterial : arrMaterial,
-            arrCountry: arrCountry
-        },
-        complete: function(data) {
-            selectProduct(data['responseJSON']);
-        }
-    })
     //Подготовить запрос
 });
 
@@ -63,17 +57,46 @@ $('#Show').click(function () {
 $('#search-btn').click(function () {
 
 });
+function getAjax(arrPrice, arrColor, arrBrand, arrMaterial, arrCountry) {
+    $.ajax({
+        url: 'http://basicserver/index/filters',
+        method: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        dataType: 'json',
+        data: {
+            arrPrice: arrPrice,
+            arrColor : arrColor,
+            arrBrand : arrBrand,
+            arrMaterial : arrMaterial,
+            arrCountry: arrCountry,
+        },
+        success: function(dataResult) {
+            console.log(arrPrice)
+            //console.log(arrColor)
+            //console.log(arrBrand)
+            //console.log(arrMaterial)
+            //console.log(arrCountry)
+            selectProduct(dataResult)
+        },
+        complete: function() {
+           // console.log(arrPrice)
+        }
+    });
+}
 
 //размещение товаров на странице
 function selectProduct(data) {
-    for (let i; i < data.length; i++){
-        $('#cont-for-cards').append('<div class="card"></div>')
-        $('.card').append(`<img src="${data[i][5]}" alt="alt"> <div class="contParam"></div>`)
-        $('.contParam').append(`<div class="name_prod">${data[i][2]}
-            <div>Country: ${data[i][6]}</div>
-            <div>Material: ${data[i][3]}</div>
-            <div>Color: ${data[i][2]}</div>
-            <div class="price_prod">${data[i][7]}</div>`)
-        
+    for (let i = 0; i < data.length; i++){
+        $("#cont-for-cards").append(`
+            <div class="card">
+                <div class="contParam">
+                    <img src="${data['Photo']}">
+                    <div class="name_prod">${data[i]['Name']}</div>
+                    <div>Country: ${data[i]['Country']}</div>
+                    <div>Material: ${data[i]['Material']}</div>
+                    <div>Color: ${data[i]['Color']}</div>
+                    <div class="price_prod">Prise: ${data[i]['Prise']}</div>
+                </div>
+            </div>`);
     }
 }
