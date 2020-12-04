@@ -26,67 +26,84 @@ class Model_Product extends Model_Base {
 
     public function constructSelect(){
         $select = array(
-            'chooseParam' => ''
+            'chooseParam' => '',
         );
-        if ((!empty($_POST['arrPrice'])) OR (!empty($_POST['arrColor'])) OR (!empty($_POST['arrBrand'])) OR (!empty($_POST['arrMaterials'])) OR (!empty($_POST['arrCountry']))){
-            $arrPrice = explode(' ', $_POST['arrPrice']);
-            $arrColor = explode(' ', $_POST['arrColor']);
-            $arrBrand = explode(' ', $_POST['arrBrand']);
-            $arrMaterial = explode(' ', $_POST['arrMaterial']);
-            $arrCountry = explode(' ', $_POST['arrCountry']);
 
-            $select['WHERE'] = '';
-            $selectStr = '';
-            $selectStr1 = '';
-            $selectStr2 = '';
-            $selectStr3 = '';
-            $selectStr4 = '';
-            if (count($arrPrice) > 0){
-                $selectStr .= 'Price ';
+        // ------------------- SELECT WHERE Construct --------------------- //
+        // ---------------------------------------------------------------- //
 
-                if (in_array( 'price-s',$arrPrice)){
-                    $selectStr .= 'BETWEEN 1 AND 100 AND';
-                }
-                if (in_array( 'price-m',$arrPrice)){
-                    $selectStr .= 'BETWEEN 101 AND 300 AND';
-                }
-                if (in_array( 'price-l',$arrPrice)){
-                    $selectStr .= 'BETWEEN 301 AND 500 AND';
-                }
-                if (in_array( 'price-xl',$arrPrice)){
-                    $selectStr .= ' > 500 AND';
-                }
-
-            }
-
-            if (count($arrColor) > 0){
-                foreach ($arrColor as $key => $val){
-                    $selectStr1 .= 'Color = ' . $val . ' AND';
-                }
-            }
-
-            if (count($arrBrand) > 0){
-                foreach ($arrBrand as $key => $val){
-                   $selectStr2 = 'Brand = ' . $val . ' AND';
-                }
-            }
-
-            if (count($arrMaterial) > 0){
-                foreach ($arrMaterial as $key => $val){
-                    $selectStr3 = 'Material = ' . $val . ' AND';
-                }
-            }
-
-            if (count($arrCountry) > 0){
-                foreach ($arrCountry as $key => $val){
-                    $selectStr4 = 'Material = ' . $val . ' AND';
-                }
-            }
-            $select .= $selectStr . $selectStr1 . $selectStr2 . $selectStr3 . $selectStr4;
-            $select = mb_substr($select, 0, -4);
+        // ---------------- SEARCH ---------------- //
+        if (!empty($_POST['search'])){
+            unset($select['WHERE']);
+            $select['WHERE'] = "Name LIKE '%{$_POST['search']}%'";
         }
 
+        // ---------------- FILTERS -------------- //
+        if ((isset($_POST['arrPrice'])) OR (isset($_POST['arrColor'])) OR (isset($_POST['arrBrand'])) OR (isset($_POST['arrMaterials'])) OR (isset($_POST['arrCountry']))) {
+            $arrPrice = $_POST['arrPrice'] ? explode(' ', trim($_POST['arrPrice'])) : [];
+            $arrColor = $_POST['arrColor'] ? explode(' ', trim($_POST['arrColor'])) : [];
+            $arrBrand = $_POST['arrBrand'] ? explode(' ', trim($_POST['arrBrand'])) : [];
+            $arrMaterial = $_POST['arrMaterial'] ? explode(' ', trim($_POST['arrMaterial'])) : [];
+            $arrCountry = $_POST['arrCountry'] ? explode(' ', trim($_POST['arrCountry'])) : [];
 
+            if ((count($arrPrice) > 0) OR (count($arrColor) > 0) OR (count($arrBrand) > 0) OR (count($arrMaterial) > 0) OR (count($arrCountry) > 0)) {
+                $select['WHERE'] = '';
+                $selectStr = '';
+                $selectStr1 = '';
+                $selectStr2 = '';
+                $selectStr3 = '';
+                $selectStr4 = '';
+
+                if (count($arrPrice) > 0) {
+
+                    if (in_array('price-s', $arrPrice)) {
+                        $selectStr .= '(Price BETWEEN 1 AND 100) OR ';
+                    }
+                    if (in_array('price-m', $arrPrice)) {
+                        $selectStr .= '( Price BETWEEN 101 AND 300) OR ';
+                    }
+                    if (in_array('price-l', $arrPrice)) {
+                        $selectStr .= '(Price BETWEEN 301 AND 500) OR ';
+                    }
+                    if (in_array('price-xl', $arrPrice)) {
+                        $selectStr .= 'Price > 500 OR ';
+                    }
+                    $selectStr =mb_substr($selectStr, 0, -4) . " AND ";
+                }
+
+                if (count($arrColor) > 0) {
+                    $arrColor = "'" . implode("', '", $arrColor) . "'";
+                    $selectStr1 = "Color IN ({$arrColor}) AND ";
+                }
+
+                if (count($arrBrand) > 0) {
+                    $arrBrand = "'" . implode("', '", $arrBrand) . "'";
+                    $selectStr2 = "Brand IN ({$arrBrand}) AND ";
+                }
+
+                if (count($arrMaterial) > 0) {
+                    $arrMaterial = "'" . implode("', '", $arrMaterial) . "'";
+                    $selectStr3 = "Material IN ({$arrMaterial}) AND ";
+                }
+
+                if (count($arrCountry) > 0) {
+                    $arrCountry = "'" . implode("', '", $arrCountry) . "'";
+                    $selectStr4 = "Country IN ({$arrCountry}) AND ";
+                }
+
+                $select['WHERE'] .= $selectStr . $selectStr1 . $selectStr2 . $selectStr3 . $selectStr4;
+                $select['WHERE'] = mb_substr($select['WHERE'], 0, -5);
+            }
+        }
+
+        // ------------------- SELECT ORDER Construct ------------------ //
+        // ------------------------------------------------------------- //
+
+
+
+        if (!empty($_POST['sort'])){
+            $select['ORDER'] = "Price {$_POST['sort']}";
+        }
 
         return $select;
     }

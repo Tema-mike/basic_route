@@ -21,6 +21,7 @@ abstract class Model_Base {
     //SELECT
     public function selectRows($select){
         $sqlSelect = $this->caseSelect($select);
+
         try {
             $db = $this->db;
             $stmt = $db->query($sqlSelect);
@@ -69,41 +70,46 @@ abstract class Model_Base {
 
     //SELECT query variants
     private function caseSelect($select){
+
         $allQuery = array_keys($select);
-        $choseParam = "*";
+        $choseParam = "* ";
 
         //Choose one or more columns for select
         if (!empty($select['chooseColumn'])){
             $choseParam = $select['chooseColumn'];
         }
 
-        $sqlSelect ="SELECT" . $choseParam . "FROM " . $this->table;
+        $sqlSelect ="SELECT " . $choseParam . "FROM " . $this->table;
 
         //---------- Cases of conditions ----------//
         //WHERE
         if (in_array('WHERE', $allQuery)){
             foreach ($select as $key => $val){
                 if (mb_strtoupper($key) == 'WHERE'){
-                    $sqlSelect .= "WHERE" . $val;
+                    $sqlSelect .= " WHERE " . $val;
                 }
             }
         }
+
+        //ORDER
+        if (in_array('ORDER', $allQuery)){
+            foreach ($select as $key => $val){
+                if (mb_strtoupper($key) == 'ORDER'){
+                    $sqlSelect .= " ORDER BY " . $val;
+                }
+            }
+        }
+/*
         //GROUP
         if (in_array('GROUP', $allQuery)){
             foreach ($select as $key => $val){
                 if (mb_strtoupper($key)){
-                    $sqlSelect .= "GROUP BY" . $val;
+                    $sqlSelect .= " GROUP BY " . $val;
                 }
             }
         }
-        //ORDER
-        if (in_array('ORDER', $allQuery)){
-            foreach ($select as $key => $val){
-                if (mb_strtoupper($key)){
-                    $sqlSelect .= "ORDER BY" . $val;
-                }
-            }
-        }
+
+
         //LIMIT
         if (in_array('LIMIT', $allQuery)){
             foreach ($select as $val){
@@ -111,7 +117,9 @@ abstract class Model_Base {
                     $sqlSelect .= "LIMIT" . $val;
                 }
             }
-        }
+        }*/
         return $sqlSelect;
+
     }
+
 }

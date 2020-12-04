@@ -1,87 +1,59 @@
-$(document).ready(event =>{
-    getAjax();
-});
+$(document).ready(
+    getAjax()
+)
 
 // Open and close filters
 $(".dropbtn").click(function(){
-   let btn = $(this).next().attr('class');
+
+   let btn = $(this).next().attr('class')
+
    if (btn === 'dropdown-content show'){
-       $(this).next().removeClass('show');
+       $(this).next().removeClass('show')
    } else {
-       $(this).next().addClass('show');
+       $(this).next().addClass('show')
    }
 });
 
+//Sort cards
+$('.btn-sort').click(function () {
+    let sort = $(this).attr('name')
+    showFilters(sort)
+})
+
 //Start filter
 $('#Show').click(function () {
-    let arrPrice = ''
-    let arrColor = ''
-    let arrBrand = ''
-    let arrMaterial = ''
-    let arrCountry = ''
-
-    //found all names of checked checkboxes
-    $.each($('.check:checked'), (number, elem) => {
-        let param = $(elem).attr('name')
-        let checkClass = $(elem).attr('class')
-
-        switch (checkClass) {
-            case 'price check':
-                arrPrice += param + " ";
-                break;
-            case 'colors check':
-                arrColor += param + " ";
-                break;
-            case 'brands check':
-               arrBrand += param + " ";
-                break;
-            case 'materials check':
-                arrMaterial += param + " ";
-                break;
-            case 'country check':
-                arrCountry += param + " ";
-                break;
-        }
-    });
-    getAjax(arrPrice, arrColor, arrBrand, arrMaterial, arrCountry);
-    //console.log(arrPrice)
-    //console.log(arrColor)
-    //console.log(arrBrand)
-    //.log(arrMaterial)
-    //.log(arrCountry)
-
-    //Подготовить запрос
-});
+    showFilters()
+})
 
 //Search
 $('#search-btn').click(function () {
+    getAjax()
+})
 
-});
-function getAjax(arrPrice, arrColor, arrBrand, arrMaterial, arrCountry) {
+// ---------------------------- Functions ----------------------------- //
+// -------------------------------------------------------------------- //
+
+//Universal AJAX for filters of Products
+function getAjax(sort, arrPrice, arrColor, arrBrand, arrMaterial, arrCountry) {
     $.ajax({
         url: 'http://basicserver/index/filters',
-        method: 'POST',
+        method: 'post',
         contentType: 'application/x-www-form-urlencoded',
         dataType: 'json',
         data: {
-            arrPrice: arrPrice,
+            search : $('#search-line').val(),
+            sort : sort,
+            arrPrice : arrPrice,
             arrColor : arrColor,
             arrBrand : arrBrand,
             arrMaterial : arrMaterial,
             arrCountry: arrCountry,
         },
         success: function(dataResult) {
-            console.log(arrPrice)
-            //console.log(arrColor)
-            //console.log(arrBrand)
-            //console.log(arrMaterial)
-            //console.log(arrCountry)
+            clearCatalog()
             selectProduct(dataResult)
-        },
-        complete: function() {
-           // console.log(arrPrice)
         }
-    });
+    })
 }
 
 //размещение товаров на странице
@@ -90,13 +62,51 @@ function selectProduct(data) {
         $("#cont-for-cards").append(`
             <div class="card">
                 <div class="contParam">
-                    <img src="${data['Photo']}">
+                    <img src="${data['Photo']}" alt="">
                     <div class="name_prod">${data[i]['Name']}</div>
                     <div>Country: ${data[i]['Country']}</div>
                     <div>Material: ${data[i]['Material']}</div>
                     <div>Color: ${data[i]['Color']}</div>
-                    <div class="price_prod">Prise: ${data[i]['Prise']}</div>
+                    <div class="price_prod">Prise: ${data[i]['Price']}</div>
                 </div>
-            </div>`);
+            </div>`)
     }
+}
+
+//Очистка каталога
+function clearCatalog() {
+    $("#cont-for-cards").html("")
+}
+
+//found all names of checked checkboxes
+function showFilters(sort){
+    let arrPrice = ''
+    let arrColor = ''
+    let arrBrand = ''
+    let arrMaterial = ''
+    let arrCountry = ''
+
+    $.each($('.check:checked'), (number, elem) => {
+        let param = $(elem).attr('name')
+        let checkClass = $(elem).attr('class')
+
+        switch (checkClass) {
+            case 'price check':
+                arrPrice += param + " "
+                break;
+            case 'colors check':
+                arrColor += param + " "
+                break;
+            case 'brands check':
+                arrBrand += param + " "
+                break;
+            case 'materials check':
+                arrMaterial += param + " "
+                break;
+            case 'country check':
+                arrCountry += param + " "
+                break;
+        }
+    });
+    getAjax(sort, arrPrice, arrColor, arrBrand, arrMaterial, arrCountry)
 }

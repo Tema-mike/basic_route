@@ -6,7 +6,7 @@
 
         <title>Каталог</title>
         <link href="/public/CSS/style.css" rel="stylesheet" type="text/css">
-
+        <link href="/public/CSS/css/all.css" rel="stylesheet" type="text/css">
         <script src="/public/JS/jquery.js"></script>
     </head>
     <body>
@@ -16,7 +16,7 @@
 
                 <!-- Prise -->
                 <div class="dropdown">
-                    <button class="dropbtn">Prise</button>
+                    <button class="dropbtn">Price</button>
                     <div id="myDrop" class="dropdown-content" >
                         <label for="price-s">
                             <input type="checkbox" class="price check" id="price-s" name="price-s">
@@ -42,15 +42,15 @@
                     <button class="dropbtn">Colors</button>
                     <div class="dropdown-content" >
                         <label>
-                            <input id="col-red" name="col-red" class="colors check" type="checkbox">
+                            <input id="col-red" name="red" class="colors check" type="checkbox">
                         </label>
                         <div>Red</div>
                         <label>
-                            <input id="col-green" name="col-green" class="colors check" type="checkbox">
+                            <input id="col-green" name="green" class="colors check" type="checkbox">
                         </label>
                         <div>Green</div>
                         <label>
-                            <input id="col-blue" name="col-blue" class="colors check" type="checkbox">
+                            <input id="col-blue" name="blue" class="colors check" type="checkbox">
                         </label>
                         <div>Blue</div>
                     </div>
@@ -61,7 +61,7 @@
                     <button class="dropbtn">Brands</button>
                     <div id="myDrop2" class="dropdown-content">
                         <label>
-                            <input id="brand1" name="brand1"class="brands check" type="checkbox">
+                            <input id="brand1" name="brand1" class="brands check" type="checkbox">
                         </label>
                         <div>Brand 1</div>
                         <label>
@@ -115,10 +115,17 @@
                 <button id="Show" name="Show">Show</button>
             </div>
             <div id="catalog">
+                <div id="sort">
+                    Sort by Price:
+                    <button id="desc-sort" class="btn-sort" name="DESC"><i class="fas fa-arrow-up"></i></button>
+                    <button id="asc-sort" class="btn-sort" name="ASC"><i class="fas fa-arrow-down"></i></button>
+                </div>
+
                 <div id="search-container">
                     <input type="search" class="search" id="search-line" name="searchLine" placeholder="Search...">
                     <button class="search" id="search-btn" name="searchBtn">Search</button>
                 </div>
+
                 <div id="cont-for-cards">
 
                 </div>
