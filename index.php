@@ -18,9 +18,6 @@ require('classes/Template.php');
 require ('classes/Model_Base.php');
 
 //Connect Router
-$router = new Router($registry);
-
-$registry->set('router', $router);
+$router = new Router();
 $router->setPath(SITE_PATH . 'controllers');
-
 $router->start();

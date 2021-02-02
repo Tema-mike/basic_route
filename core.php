@@ -5,8 +5,6 @@
 /* ------------ by their name of class. ----------------- */
 /* ------------------------------------------------------ */
 
-require_once (SITE_PATH . 'classes' . DS . 'Registry.php');
-
 function getClass($className) {
     $fileName = strtolower($className) . ".php";
     $expArr = explode('_', $className);
@@ -26,7 +24,7 @@ function getClass($className) {
 
 
     $file = SITE_PATH . $folder . DS . $fileName;
-    echo $file;
+
     require_once ($file);
 }
 

@@ -7,13 +7,6 @@
 
 class Router {
 
-    private $registry;
-
-    // Connect to the Registry
-    public function __construct($registry) {
-        $this->registry = $registry;
-    }
-
     // Identification of path to folder with controllers
     public function setPath ($path){
         $path = trim($path, '/\\');
@@ -29,7 +22,6 @@ class Router {
     //Identification of controller and action
     private function getController(&$file, &$controller, &$action, &$args) {
         $route = (empty($_GET['route']) ? '' : $_GET['route']);
-        // runset($route);
 
         if (empty($route)) {
             $route = 'index';
@@ -86,7 +78,7 @@ class Router {
 
         //Create Controller's object
         $class = 'Controller_' . $controllrer;
-        $controller = new $class($this->registry);
+        $controller = new $class();
 
         //if action not found - Error 404
         if (is_callable(array($controller, $action)) == false){
